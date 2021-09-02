@@ -61,7 +61,7 @@ jobs:
                 prerelease: true,
                 tag_name: "v${{needs.CustomEnvironmentVariables.outputs.currentVersion}}-beta"
                 name: "workflow v${{needs.CustomEnvironmentVariables.outputs.currentVersion}}-beta"
-                body_path: "${{github.workspace}}\CHANGELOG.md"
+                body_path: "${{github.workspace}}\\CHANGELOG.md"
                 token: ${{github.token}}
                 files: |
                   dist
