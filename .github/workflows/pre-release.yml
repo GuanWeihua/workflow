@@ -30,7 +30,7 @@ jobs:
             - id: setCurrentBranch
               run: echo "::set-output name=value::${{github.ref}}"
 
-    Build:
+    OutputEnvironmentVariables:
         runs-on: windows-latest
 
         strategy:
@@ -40,47 +40,49 @@ jobs:
         needs: CustomEnvironmentVariables
 
         steps:
-            - name: Checkout.
-              uses: actions/checkout@v2
-              with:
-                ref: ${{github.ref}}
+            - run: echo ${{needs.CustomEnvironmentVariables.outputs.currentBranch}}
+            - run: echo ${{needs.CustomEnvironmentVariables.outputs.currentVersion}}
+
+    # Build:
+    #     runs-on: windows-latest
+
+    #     strategy:
+    #         matrix:
+    #             node-version: [14.x]
+
+    #     needs: CustomEnvironmentVariables
+
+    #     steps:
+    #         - name: Checkout.
+    #           uses: actions/checkout@v2
+    #           with:
+    #             ref: ${{github.ref}}
             
-            - name: Install dependencies.
-              run: npm install
+    #         - name: Install dependencies.
+    #           run: npm install
             
-            - name: Build project.
-              run: npm run build
+    #         - name: Build project.
+    #           run: npm run build
 
-            - name: Generate changelog.
-              run: npm run changelog
+    #         - name: Generate changelog.
+    #           run: npm run changelog
 
-            - name: Publish release.
-              uses: softprops/action-gh-release@v1
-              with:
-                draft: true,
-                prerelease: true,
-                tag_name: "v${{needs.CustomEnvironmentVariables.outputs.currentVersion}}-beta"
-                name: "workflow v${{needs.CustomEnvironmentVariables.outputs.currentVersion}}-beta"
-                body_path: "${{github.workspace}}\\CHANGELOG.md"
-                token: ${{github.token}}
-                files: |
-                  dist
-                  index.html
+    #         - name: Publish release.
+    #           uses: softprops/action-gh-release@v1
+    #           with:
+    #             draft: true,
+    #             prerelease: true,
+    #             tag_name: "v${{needs.CustomEnvironmentVariables.outputs.currentVersion}}-beta"
+    #             name: "workflow v${{needs.CustomEnvironmentVariables.outputs.currentVersion}}-beta"
+    #             body_path: "${{github.workspace}}\\CHANGELOG.md"
+    #             token: ${{github.token}}
+    #             files: |
+    #               dist
+    #               index.html
             
 
 
-# OutputEnvironmentVariables:
-#     runs-on: windows-latest
 
-#     strategy:
-#         matrix:
-#             node-version: [14.x]
-
-#     needs: CustomEnvironmentVariables
-
-#     steps:
-#         - run: echo ${{needs.CustomEnvironmentVariables.outputs.currentBranch}}
-#         - run: echo ${{needs.CustomEnvironmentVariables.outputs.currentVersion}}
 
 # steps:
 #     - name: Checkout
