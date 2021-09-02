@@ -23,7 +23,7 @@ jobs:
             - id: setCurrentVersion
             #   run: echo "::set-output name=test::${{github.ref}}"
               run: |
-                const MY_STRING = ${{github.ref}};
+                const MY_STRING = "${{github.ref}}";
                 echo "::set-output name=test::$MY_STRING"
               shell: node
             - id: setCurrentBranch
