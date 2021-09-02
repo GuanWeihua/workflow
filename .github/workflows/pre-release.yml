@@ -5,13 +5,18 @@ on:
         branches: 
             - release/**
 jobs:
-  prerelease:
+    prerelease:
 
-      runs-on: windows-latest
+        runs-on: windows-latest
 
-      strategy:
-          matrix:
-              node-version: [14.x]
+        strategy:
+            matrix:
+                node-version: [14.x]
 
       steps:
-          - run: echo ${{ github.ref }}
+            - name: Checkout
+              uses: actions/checkout@v2
+              with:
+                    ref: ${{ github.ref }}
+
+            - run: echo ${{ github.ref }}
