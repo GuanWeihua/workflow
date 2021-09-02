@@ -14,4 +14,4 @@ jobs:
               node-version: [14.x]
 
       steps:
-          - run: echo "Deploying to production server on branch $GITHUB_REF".
+          - run: echo $GITHUB_REF.
