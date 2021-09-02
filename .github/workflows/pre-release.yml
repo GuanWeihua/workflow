@@ -36,11 +36,11 @@ jobs:
             - id: setCurrentBranch
               run: echo "::set-output name=value::${{github.ref}}"
             
+            - id: package
+              uses: codex-team/action-nodejs-package-info@v1
+
             - id: setProjectName
-              run: |
-                content4String=$(cat ./package.json)
-                echo "::set-output name=value::$content4String"
-              shell: bash
+              run: echo "::set-output name=value::${{steps.package.outputs.name}}"
 
 
     OutputEnvironmentVariables:
