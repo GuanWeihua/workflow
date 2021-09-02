@@ -38,8 +38,8 @@ jobs:
             
             - id: setProjectName
               run: |
-                content4String="$(cat ./package.json)"
-                echo "::set-output name=value::$content4String.name"
+                content4String=$(cat ./package.json)
+                echo "::set-output name=value::$content4String"
               shell: bash
 
 
