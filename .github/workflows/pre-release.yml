@@ -16,19 +16,33 @@ jobs:
                 node-version: [14.x]
 
         outputs:
-            currentBranch: ${{ steps.setCurrentVersion.outputs.value }}
-            currentVersion: ${{ steps.setCurrentBranch.outputs.value }}
-        
+            projectName: ${{ steps.setProjectName.outputs.value }}
+            currentBranch: ${{ steps.setCurrentBranch.outputs.value }}
+            currentVersion: ${{ steps.setCurrentVersion.outputs.value }}
+            
         steps:
+            - name: Checkout.
+              uses: actions/checkout@v2
+              with:
+                ref: ${{github.ref}}
+
             - id: setCurrentVersion
-            #   run: echo "::set-output name=test::${{github.ref}}"
               run: |
                 ref="${{github.ref}}"
                 version="${ref//$'refs/heads/release/'/''}"
                 echo "::set-output name=value::$version"
               shell: bash
+            
             - id: setCurrentBranch
               run: echo "::set-output name=value::${{github.ref}}"
+            
+            - id: setProjectName
+              run: |
+                content4String=$(cat ./package.json)
+                content4JSON=fromJSON(content4String)
+                echo "::set-output name=value::$content4JSON.name"
+              shell: bash
+
 
     OutputEnvironmentVariables:
         runs-on: windows-latest
@@ -40,6 +54,7 @@ jobs:
         needs: CustomEnvironmentVariables
 
         steps:
+            - run: echo ${{needs.CustomEnvironmentVariables.outputs.projectName}}
             - run: echo ${{needs.CustomEnvironmentVariables.outputs.currentBranch}}
             - run: echo ${{needs.CustomEnvironmentVariables.outputs.currentVersion}}
 
@@ -56,7 +71,7 @@ jobs:
     #         - name: Checkout.
     #           uses: actions/checkout@v2
     #           with:
-    #             ref: ${{github.ref}}
+    #             ref: ${{needs.CustomEnvironmentVariables.outputs.currentBranch}}
             
     #         - name: Install dependencies.
     #           run: npm install
@@ -79,14 +94,3 @@ jobs:
     #             files: |
     #               dist
     #               index.html
-            
-
-
-
-
-# steps:
-#     - name: Checkout
-#       uses: actions/checkout@v2
-#       with:
-#             ref: ${{ github.ref }}
-#     - run: echo ${{ github.ref }}
