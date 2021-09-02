@@ -24,7 +24,7 @@ jobs:
             #   run: echo "::set-output name=test::${{github.ref}}"
               run: |
                 version = "${{github.ref}}";
-                varsion = "${version/refs\/heads\/release\//}"
+                varsion = "${version/$'refs/heads/release/'/''}"
                 echo "::set-output name=value::$version"
               shell: bash
             - id: setCurrentBranch
