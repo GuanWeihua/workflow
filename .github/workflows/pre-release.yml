@@ -4,7 +4,7 @@ on:
     push:
         branches: 
             -release/**
-jobs
+jobs:
   prerelease:
 
       runs-on: windows-latest
