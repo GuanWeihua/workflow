@@ -25,6 +25,7 @@ jobs:
               run: |
                 MY_STRING="hello world"
                 echo "::set-output name=test::$MY_STRING"
+              shell: bash
             - id: setCurrentBranch
               run: echo "::set-output name=test::${{github.ref}}"
 
