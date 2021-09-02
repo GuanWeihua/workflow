@@ -59,7 +59,8 @@ jobs:
               with:
                 draft: true,
                 prerelease: true,
-                name: ${{needs.CustomEnvironmentVariables.outputs.currentVersion}}
+                tag_name: "v${{needs.CustomEnvironmentVariables.outputs.currentVersion}}-beta"
+                name: "workflow v${{needs.CustomEnvironmentVariables.outputs.currentVersion}}-beta"
                 body_path: ${{github.workspace }}-CHANGELOG.md
                 token: ${{ secrets.CUSTOM_GITHUB_TOKEN}}
                 files: |
