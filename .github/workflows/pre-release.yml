@@ -1,11 +1,11 @@
 name: Pre-release
 
-on:
-    push:
-        branches: 
-            - release/**
+# on:
+#     push:
+#         branches: 
+#             - release/**
 
-# on: workflow_dispatch
+on: workflow_dispatch
 
 jobs:
     CustomEnvironmentVariables:
@@ -39,7 +39,8 @@ jobs:
             - id: setProjectName
               run: |
                 content4String="$(cat ./package.json)"
-                echo "::set-output name=value::$content4String"
+                content4JSON=${{ fromJSON($content4String) }}
+                echo "::set-output name=value::$content4JSON.name"
               shell: bash
 
 
