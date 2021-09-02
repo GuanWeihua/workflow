@@ -21,9 +21,10 @@ jobs:
         
         steps:
             - id: setCurrentVersion
-              run: echo "::set-output name=test::hello"
+              shell: node
+              run: echo "::set-output name=test::${{ github.ref.replace('release/', '') }}"
             - id: setCurrentBranch
-              run: echo "::set-output name=test::world"
+              run: echo "::set-output name=test::${{github.ref}}"
 
     OutputEnvironmentVariables:
         runs-on: windows-latest
