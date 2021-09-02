@@ -30,7 +30,7 @@ jobs:
             - id: setCurrentBranch
               run: echo "::set-output name=value::${{github.ref}}"
 
-    OutputEnvironmentVariables:
+    Build:
         runs-on: windows-latest
 
         strategy:
@@ -40,8 +40,46 @@ jobs:
         needs: CustomEnvironmentVariables
 
         steps:
-            - run: echo ${{needs.CustomEnvironmentVariables.outputs.currentBranch}}
-            - run: echo ${{needs.CustomEnvironmentVariables.outputs.currentVersion}}
+            - name: Checkout.
+              uses: actions/checkout@v2
+              with:
+                ref: ${{ needs.CustomEnvironmentVariables.outputs.currentBranch }}
+            
+            - name: Install dependencies.
+              run: npm install
+            
+            - name: Build project.
+              run: npm run build
+
+            - name: Generate changelog.
+              run: npm run changelog
+
+            - name: Publish release.
+              uses: softprops/action-gh-release@v1
+              with:
+                draft: true,
+                prerelease: true,
+                name: ${{ needs.CustomEnvironmentVariables.outputs.currentVersion }}
+                body_path: ${{ github.workspace }}-CHANGELOG.md
+                token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
+                files: |
+                  dist
+                  index.html
+            
+
+
+# OutputEnvironmentVariables:
+#     runs-on: windows-latest
+
+#     strategy:
+#         matrix:
+#             node-version: [14.x]
+
+#     needs: CustomEnvironmentVariables
+
+#     steps:
+#         - run: echo ${{needs.CustomEnvironmentVariables.outputs.currentBranch}}
+#         - run: echo ${{needs.CustomEnvironmentVariables.outputs.currentVersion}}
 
 # steps:
 #     - name: Checkout
