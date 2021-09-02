@@ -1,9 +1,12 @@
 name: Pre-release
 
-on:
-    push:
-        branches: 
-            - release/**
+# on:
+#     push:
+#         branches: 
+#             - release/**
+
+on: workflow_dispatch
+
 jobs:
     CustomEnvironmentVariables:
         runs-on: windows-latest
