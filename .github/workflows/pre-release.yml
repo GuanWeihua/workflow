@@ -43,7 +43,7 @@ jobs:
             - name: Checkout.
               uses: actions/checkout@v2
               with:
-                ref: ${{ needs.CustomEnvironmentVariables.outputs.currentBranch }}
+                ref: ${{github.ref}}
             
             - name: Install dependencies.
               run: npm install
@@ -59,9 +59,9 @@ jobs:
               with:
                 draft: true,
                 prerelease: true,
-                name: ${{ needs.CustomEnvironmentVariables.outputs.currentVersion }}
-                body_path: ${{ github.workspace }}-CHANGELOG.md
-                token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
+                name: ${{needs.CustomEnvironmentVariables.outputs.currentVersion}}
+                body_path: ${{github.workspace }}-CHANGELOG.md
+                token: ${{ secrets.CUSTOM_GITHUB_TOKEN}}
                 files: |
                   dist
                   index.html
