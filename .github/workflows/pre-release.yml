@@ -62,7 +62,7 @@ jobs:
                 tag_name: "v${{needs.CustomEnvironmentVariables.outputs.currentVersion}}-beta"
                 name: "workflow v${{needs.CustomEnvironmentVariables.outputs.currentVersion}}-beta"
                 body_path: ${{github.workspace }}-CHANGELOG.md
-                token: ${{ secrets.CUSTOM_GITHUB_TOKEN}}
+                token: ${{github.token}}
                 files: |
                   dist
                   index.html
