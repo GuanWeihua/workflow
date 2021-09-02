@@ -5,18 +5,39 @@ on:
         branches: 
             - release/**
 jobs:
-    prerelease:
-
+    CustomEnvironmentVariables:
         runs-on: windows-latest
 
         strategy:
             matrix:
                 node-version: [14.x]
 
+        outputs:
+            currentBranch: ${{ steps.setCurrentBranch.outputs.test }}
+            currentVersion: ${{ steps.setCurrentVersion.outputs.test }}
+        
         steps:
-            - name: Checkout
-              uses: actions/checkout@v2
-              with:
-                    ref: ${{ github.ref }}
+            - id: setCurrentVersion
+              run: echo "::set-output name=test::hello"
+            - id: setCurrentBranch
+              run: echo "::set-output name=test::world"
 
-            - run: echo ${{ github.ref }}
+    OutputEnvironmentVariables:
+        runs-on: windows-latest
+
+        strategy:
+            matrix:
+                node-version: [14.x]
+
+        needs: CustomEnvironmentVariables
+
+        steps:
+            - run: echo ${{needs.CustomEnvironmentVariables.outputs.currentBranch}}
+            - run: echo ${{needs.CustomEnvironmentVariables.outputs.currentVersion}}
+
+# steps:
+#     - name: Checkout
+#       uses: actions/checkout@v2
+#       with:
+#             ref: ${{ github.ref }}
+#     - run: echo ${{ github.ref }}
