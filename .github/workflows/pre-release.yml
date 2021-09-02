@@ -16,18 +16,19 @@ jobs:
                 node-version: [14.x]
 
         outputs:
-            currentBranch: ${{ steps.setCurrentBranch.outputs.test }}
-            currentVersion: ${{ steps.setCurrentVersion.outputs.test }}
+            currentBranch: ${{ steps.setCurrentVersion.outputs.value }}
+            currentVersion: ${{ steps.setCurrentBranch.outputs.value }}
         
         steps:
             - id: setCurrentVersion
             #   run: echo "::set-output name=test::${{github.ref}}"
               run: |
-                const MY_STRING = "${{github.ref}}";
-                echo "::set-output name=test::$MY_STRING"
-              shell: node
+                version = "${{github.ref}}";
+                varsion = "${version/refs\/heads\/release\//}"
+                echo "::set-output name=value::$version"
+              shell: bash
             - id: setCurrentBranch
-              run: echo "::set-output name=test::${{github.ref}}"
+              run: echo "::set-output name=value::${{github.ref}}"
 
     OutputEnvironmentVariables:
         runs-on: windows-latest
