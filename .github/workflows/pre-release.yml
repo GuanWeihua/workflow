@@ -23,8 +23,8 @@ jobs:
             - id: setCurrentVersion
             #   run: echo "::set-output name=test::${{github.ref}}"
               run: |
-                ref = "${{github.ref}}";
-                version = "${ref//$'refs/heads/release/'/''}"
+                ref="${{github.ref}}"
+                version="${ref//$'refs/heads/release/'/''}"
                 echo "::set-output name=value::$version"
               shell: bash
             - id: setCurrentBranch
