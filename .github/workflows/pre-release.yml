@@ -21,9 +21,9 @@ jobs:
         
         steps:
             - id: setCurrentVersion
-              shell: node
+              run: echo "::set-output name=test::${{github.ref}}"
             #   run: echo "::set-output name=test::${{ github.ref.replace('release/', '') }}"
-                run: echo "::set-output name=test::${{github.ref}}"
+            #   shell: node
             - id: setCurrentBranch
               run: echo "::set-output name=test::${{github.ref}}"
 
