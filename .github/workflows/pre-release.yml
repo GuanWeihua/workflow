@@ -1,0 +1,17 @@
+name: Pre-release
+
+on:
+    push:
+        branches: 
+            -release/**
+jobs
+  prerelease:
+
+      runs-on: windows-latest
+
+      strategy:
+          matrix:
+              node-version: [14.x]
+
+      steps:
+          - run: echo "Deploying to production server on branch $GITHUB_REF".
