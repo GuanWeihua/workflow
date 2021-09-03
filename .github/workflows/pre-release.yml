@@ -50,9 +50,12 @@ jobs:
                 node-version: [14.x]
 
         steps:
-            - uses: cb80/delrel@latest
+            - uses: dev-drprasad/delete-tag-and-release@v0.2.0
               with:
-                  tag: "v${{needs.CustomEnvironmentVariables.outputs.currentVersion}}-beta"
+                  delete_release: true
+                  tag_name: "v${{needs.CustomEnvironmentVariables.outputs.currentVersion}}-beta"
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     # OutputEnvironmentVariables:
     #     runs-on: windows-latest
