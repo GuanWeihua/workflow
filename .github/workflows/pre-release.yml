@@ -59,6 +59,7 @@ jobs:
                   tag_name: "v${{needs.CustomEnvironmentVariables.outputs.currentVersion}}-beta"
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  
 
     # OutputEnvironmentVariables:
     #     runs-on: windows-latest
