@@ -42,24 +42,24 @@ jobs:
             - id: setProjectName
               run: echo "::set-output name=value::${{steps.package.outputs.name}}"
 
-    DeleteRelease:
-        runs-on: windows-latest
+    # DeleteRelease:
+    #     runs-on: windows-latest
 
-        strategy:
-            matrix:
-                node-version: [14.x]
+    #     strategy:
+    #         matrix:
+    #             node-version: [14.x]
         
-        needs: CustomEnvironmentVariables
+    #     needs: CustomEnvironmentVariables
 
-        steps:
-            - run: echo "v${{needs.CustomEnvironmentVariables.outputs.currentVersion}}-beta"
-            - uses: dev-drprasad/delete-tag-and-release@v0.2.0
-              with:
-                  delete_release: true
-                  tag_name: "v${{needs.CustomEnvironmentVariables.outputs.currentVersion}}-beta"
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  
+    #     steps:
+    #         - run: echo "v${{needs.CustomEnvironmentVariables.outputs.currentVersion}}-beta"
+    #         - uses: dev-drprasad/delete-tag-and-release@v0.2.0
+    #           with:
+    #               delete_release: true
+    #               tag_name: "v${{needs.CustomEnvironmentVariables.outputs.currentVersion}}-beta"
+    #           env:
+    #               GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
     # OutputEnvironmentVariables:
     #     runs-on: windows-latest
@@ -75,38 +75,46 @@ jobs:
     #         - run: echo ${{needs.CustomEnvironmentVariables.outputs.currentBranch}}
     #         - run: echo ${{needs.CustomEnvironmentVariables.outputs.currentVersion}}
 
-    # Build:
-    #     runs-on: windows-latest
+    Build:
+        runs-on: windows-latest
 
-    #     strategy:
-    #         matrix:
-    #             node-version: [14.x]
+        strategy:
+            matrix:
+                node-version: [14.x]
 
-    #     needs: CustomEnvironmentVariables
+        needs: CustomEnvironmentVariables
 
-    #     steps:
-    #         - name: Checkout.
-    #           uses: actions/checkout@v2
-    #           with:
-    #             fetch-depth: 0
+        steps:
+            - name: Checkout.
+              uses: actions/checkout@v2
+              with:
+                fetch-depth: 0
             
-    #         - name: Install dependencies.
-    #           run: npm install
+            - name: Install dependencies.
+              run: npm install
             
-    #         - name: Build project.
-    #           run: npm run build
+            - name: Build project.
+              run: npm run build
 
-    #         - name: Generate changelog.
-    #           run: npm run changelog
+            - name: Generate changelog.
+              run: npm run changelog
 
-    #         - name: Publish release.
-    #           uses: softprops/action-gh-release@v1
-    #           with:
-    #             prerelease: ${{ true }}
-    #             tag_name: "v${{needs.CustomEnvironmentVariables.outputs.currentVersion}}-preview"
-    #             name: "${{needs.CustomEnvironmentVariables.outputs.projectName}} v${{needs.CustomEnvironmentVariables.outputs.currentVersion}}-preview"
-    #             body_path: "${{github.workspace}}\\CHANGELOG.md"
-    #             token: ${{github.token}}
-    #             files: |
-    #               dist
-    #               index.html
+            - name: Remove release
+              uses: dev-drprasad/delete-tag-and-release@v0.2.0
+              with:
+                  tag_name: "v${{needs.CustomEnvironmentVariables.outputs.currentVersion}}-beta"
+                  delete_release: true
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Publish release.
+              uses: softprops/action-gh-release@v1
+              with:
+                  prerelease: ${{ true }}
+                  tag_name: "v${{needs.CustomEnvironmentVariables.outputs.currentVersion}}-preview"
+                  name: "${{needs.CustomEnvironmentVariables.outputs.projectName}} v${{needs.CustomEnvironmentVariables.outputs.currentVersion}}-preview"
+                  body_path: "${{github.workspace}}\\CHANGELOG.md"
+                  token: ${{github.token}}
+                  files: |
+                      dist
+                      index.html
