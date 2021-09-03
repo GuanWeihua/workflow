@@ -112,7 +112,7 @@ jobs:
               with:
                   prerelease: ${{true}}
                   tag_name: "v${{needs.CustomEnvironmentVariables.outputs.currentVersion}}-Preview"
-                  target_commitish: ${{GITHUB_SHA}}
+                  target_commitish: ${{github.sha}}
                   name: "${{needs.CustomEnvironmentVariables.outputs.projectName}} Preview v${{needs.CustomEnvironmentVariables.outputs.currentVersion}}"
                   body_path: "${{github.workspace}}\\CHANGELOG.md"
                   token: ${{github.token}}
