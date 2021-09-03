@@ -5,8 +5,6 @@ on:
         branches: 
             - release/**
 
-# on: workflow_dispatch
-
 jobs:
     CustomEnvironmentVariables:
         runs-on: windows-latest
@@ -42,39 +40,6 @@ jobs:
             - id: setProjectName
               run: echo "::set-output name=value::${{steps.package.outputs.name}}"
 
-    # DeleteRelease:
-    #     runs-on: windows-latest
-
-    #     strategy:
-    #         matrix:
-    #             node-version: [14.x]
-        
-    #     needs: CustomEnvironmentVariables
-
-    #     steps:
-    #         - run: echo "v${{needs.CustomEnvironmentVariables.outputs.currentVersion}}-beta"
-    #         - uses: dev-drprasad/delete-tag-and-release@v0.2.0
-    #           with:
-    #               delete_release: true
-    #               tag_name: "v${{needs.CustomEnvironmentVariables.outputs.currentVersion}}-beta"
-    #           env:
-    #               GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-
-    # OutputEnvironmentVariables:
-    #     runs-on: windows-latest
-
-    #     strategy:
-    #         matrix:
-    #             node-version: [14.x]
-
-    #     needs: CustomEnvironmentVariables
-
-    #     steps:
-    #         - run: echo ${{needs.CustomEnvironmentVariables.outputs.projectName}}
-    #         - run: echo ${{needs.CustomEnvironmentVariables.outputs.currentBranch}}
-    #         - run: echo ${{needs.CustomEnvironmentVariables.outputs.currentVersion}}
-
     Build:
         runs-on: windows-latest
 
@@ -97,7 +62,10 @@ jobs:
               run: npm run build
 
             - name: Generate changelog.
-              run: npm run changelog
+              run: |
+                  npm run changelog
+                  sed -i "1d" CHANGELOG.md
+              shell: bash
 
             - name: Remove release
               uses: dev-drprasad/delete-tag-and-release@v0.2.0
