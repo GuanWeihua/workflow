@@ -47,10 +47,10 @@ jobs:
 
           strategy:
               matrix:
-                node-version: [14.x]
+                  node-version: [14.x]
 
           steps:
-            - uses: cb80/delrel@latest
+              - uses: cb80/delrel@latest
               with:
                  tag: "v${{needs.CustomEnvironmentVariables.outputs.currentVersion}}-beta"
 
