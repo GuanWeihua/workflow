@@ -50,6 +50,7 @@ jobs:
                 node-version: [14.x]
 
         steps:
+            - run: echo "v${{needs.CustomEnvironmentVariables.outputs.currentVersion}}-beta"
             - uses: dev-drprasad/delete-tag-and-release@v0.2.0
               with:
                   delete_release: true
