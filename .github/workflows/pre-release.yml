@@ -102,7 +102,7 @@ jobs:
             - name: Remove release
               uses: dev-drprasad/delete-tag-and-release@v0.2.0
               with:
-                  tag_name: "v${{needs.CustomEnvironmentVariables.outputs.currentVersion}}-beta"
+                  tag_name: "v${{needs.CustomEnvironmentVariables.outputs.currentVersion}}-preview"
                   delete_release: true
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -111,11 +111,10 @@ jobs:
               uses: softprops/action-gh-release@v1
               with:
                   prerelease: ${{ true }}
-                  tag_name: "v${{needs.CustomEnvironmentVariables.outputs.currentVersion}}-preview"
-                  name: "${{needs.CustomEnvironmentVariables.outputs.projectName}} v${{needs.CustomEnvironmentVariables.outputs.currentVersion}}-preview"
+                  tag_name: "v${{needs.CustomEnvironmentVariables.outputs.currentVersion}}-Preview"
+                  name: "${{needs.CustomEnvironmentVariables.outputs.projectName}} Preview v${{needs.CustomEnvironmentVariables.outputs.currentVersion}}"
                   body_path: "${{github.workspace}}\\CHANGELOG.md"
                   token: ${{github.token}}
                   files: |
                       dist
                       index.html
-                      
