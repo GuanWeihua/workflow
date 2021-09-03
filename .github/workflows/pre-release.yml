@@ -42,7 +42,7 @@ jobs:
             - id: setProjectName
               run: echo "::set-output name=value::${{steps.package.outputs.name}}"
 
-    Delete release:
+    DeleteRelease:
         runs-on: windows-latest
 
         strategy:
