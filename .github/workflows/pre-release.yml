@@ -48,6 +48,8 @@ jobs:
         strategy:
             matrix:
                 node-version: [14.x]
+        
+        needs: CustomEnvironmentVariables
 
         steps:
             - run: echo "v${{needs.CustomEnvironmentVariables.outputs.currentVersion}}-beta"
