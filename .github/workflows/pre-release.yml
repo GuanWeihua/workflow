@@ -42,15 +42,15 @@ jobs:
             - id: setProjectName
               run: echo "::set-output name=value::${{steps.package.outputs.name}}"
 
-      Delete release:
-          runs-on: windows-latest
+    Delete release:
+        runs-on: windows-latest
 
-          strategy:
-              matrix:
-                  node-version: [14.x]
+        strategy:
+            matrix:
+                node-version: [14.x]
 
-          steps:
-              - uses: cb80/delrel@latest
+        steps:
+            - uses: cb80/delrel@latest
               with:
                  tag: "v${{needs.CustomEnvironmentVariables.outputs.currentVersion}}-beta"
 
