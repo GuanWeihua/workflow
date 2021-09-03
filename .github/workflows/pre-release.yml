@@ -52,8 +52,8 @@ jobs:
         steps:
             - uses: cb80/delrel@latest
               with:
-                 tag: "v${{needs.CustomEnvironmentVariables.outputs.currentVersion}}-beta"
-
+                  tag: "v${{needs.CustomEnvironmentVariables.outputs.currentVersion}}-beta"
+                  token: ${{ secrets.MY_TOKEN }}
 
     # OutputEnvironmentVariables:
     #     runs-on: windows-latest
