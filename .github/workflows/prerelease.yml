@@ -21,25 +21,24 @@ jobs:
               run: npm install
 
             - name: GetPackageInfo.
+              id: package
               uses: codex-team/action-nodejs-package-info@v1
-              with:
-                  name: "package.json"
 
             - name: SetEnvironmentVariables.
               run: |
                   ref="${{github.ref}}"
                   app_version="${ref//$'refs/heads/release/'/''}"
 
-                  echo "app_name=${{steps.GetPackageInfo.outputs.appName}} >> $GITHUB_ENV"
+                  echo "app_name=${{steps.package.outputs.appName}} >> $GITHUB_ENV"
                   echo "app_version=$app_version >> $GITHUB_ENV"
                   echo "tag_name=v$app_version >> $GITHUB_ENV"
               shell: bash
 
             - name: EchoEnvironmentVariables.
               run: |
-                  echo ${{env.app_name}}
-                  echo ${{env.app_version}}
-                  echo ${{env.tag_name}}
+                  echo "app_name: ${{env:app_name}}"
+                  echo "app_version: ${{env:app_version}}"
+                  echo "tag_name: ${{env:tag_name}}"
             # - name: Build project.
             #   run: npm run package
 
