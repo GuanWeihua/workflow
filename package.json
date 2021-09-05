@@ -1,5 +1,6 @@
 {
   "name": "workflow",
+  "appName": "Workflow",
   "version": "1.0.0",
   "description": "调试Github自动部署&发布~",
   "main": "index.js",
