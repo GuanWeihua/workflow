@@ -25,7 +25,7 @@
     "commit": "git cz",
     "commit:all": "git add . && npm run commit",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r",
-    "release-notes": "conventional-changelog -p angular -i RELEASE_NOTES.md -s -r",
+    "generate-release-notes": "conventional-changelog -p angular -i RELEASE_NOTES.md -s -r",
     "package": "npm run build && electron-builder --config ./electron-builder.config.js"
   },
   "repository": {
