@@ -67,8 +67,9 @@ jobs:
               with:
                 name: "${{env.app_name}} ${{env.tag_name}} Preview"
                 token: ${{github.token}}
-                tag_name: "${{env.tag_name}}"
+                tag_name: "${{env.tag_name}}-Preview"
                 target_commitish: ${{github.sha}}
+                prerelease: true
                 body_path: "RELEASE_NOTES.md"
                 files: |
                     packaged/latest.yml
