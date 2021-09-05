@@ -20,10 +20,6 @@ jobs:
             # - name: Install dependencies.
             #   run: npm install
 
-            - name: Rend package info.
-              id: package
-              uses: codex-team/action-nodejs-package-info@v1
-
             - name: Set environment variables.
               run: |
                   ref="${{github.ref}}"
