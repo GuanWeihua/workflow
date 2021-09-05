@@ -17,8 +17,8 @@ jobs:
             - name: Checkout.
               uses: actions/checkout@v2
 
-            - name: Install dependencies.
-              run: npm install
+            # - name: Install dependencies.
+            #   run: npm install
 
             - name: GetPackageInfo.
               id: package
@@ -29,10 +29,9 @@ jobs:
                   ref="${{github.ref}}"
                   app_version="${ref//$'refs/heads/release/'/''}"
 
-                  echo "app_name=${{steps.package.outputs.appName}} >> $GITHUB_ENV"
-                  echo "app_version=$app_version >> $GITHUB_ENV"
-                  echo "tag_name=v$app_version >> $GITHUB_ENV"
-                  echo ${{steps.package.outputs.appName}}
+                  echo "app_name=${{steps.package.outputs.appName}}" >> $GITHUB_ENV
+                  echo "app_version=$app_version" >> $GITHUB_ENV
+                  echo "tag_name=v$app_version >>" $GITHUB_ENV
               shell: bash
 
             - name: EchoEnvironmentVariables.
