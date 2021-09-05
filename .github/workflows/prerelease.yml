@@ -20,16 +20,16 @@ jobs:
             # - name: Install dependencies.
             #   run: npm install
 
-            - name: Read package info.
+            - name: Rend package info.
               id: package
-              uses: dutscher/read-package-json-endpoint-actions@v1.33.7
+              uses: codex-team/action-nodejs-package-info@v1
 
-            - name: SetEnvironmentVariables.
+            - name: Set environment variables.
               run: |
                   ref="${{github.ref}}"
                   app_version="${ref//$'refs/heads/release/'/''}"
 
-                  echo "app_name=${{steps.package.outputs.appName}}" >> $GITHUB_ENV
+                  echo "app_name=${{steps.package.outputs.name}}" >> $GITHUB_ENV
                   echo "app_version=$app_version" >> $GITHUB_ENV
                   echo "tag_name=v$app_version" >> $GITHUB_ENV
               shell: bash
