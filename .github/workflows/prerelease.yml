@@ -29,7 +29,7 @@ jobs:
                   packageContent="${content//'%'/'%25'}"
                   packageContent="${content//$'\n'/'%0A'}"
                   packageContent="${content//$'\r'/'%0D'}"
-                  packageJSON="${{fromJson(steps.set_var.outputs.packageJson)}}"
+                  packageJSON="${{fromJson(packageContent)}}"
 
                   echo "app_name=$packageJSON.appName" >> $GITHUB_ENV
                   echo "app_version=$app_version" >> $GITHUB_ENV
