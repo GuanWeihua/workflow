@@ -1,0 +1,51 @@
+name: release
+
+on:
+    push:
+        tags:
+            - main
+
+jobs:
+    PublishRelease:
+        runs-on: windows-latest
+
+        strategy:
+            matrix:
+                node-version: [14.x]
+              
+        steps:
+            - name: Checkout .
+              uses: actions/checkout@v2
+
+            - name: Install dependencies.
+              run: npm install
+
+            - name: GetPackageInfo.
+              uses: codex-team/action-nodejs-package-info@v1 
+
+            - name: SetEnvironmentVariables.
+              run: |
+                echo "app_name=${{steps.GetPackageInfo.outputs.name}} >> $GITHUB_ENV"
+                echo "app_version=${{steps.GetPackageInfo.outputs.version}} >> $GITHUB_ENV"
+              shell: bash
+
+            - name: Generate release notes.
+              run: |
+                  npm run generate-release-notes
+                  sed -i "1d" RELEASE_NOTES.md
+              shell: bash
+
+            - name: Build project.
+              run: npm run package
+
+            - name: Publish release.
+              uses: softprops/action-gh-release@v1
+              with:
+                name: "${{env.app_name}} v${{env.app_version}}"
+                token: ${{github.token}}
+                tag_name: "v${{env.app_version}}"
+                target_commitish: ${{github.sha}}
+                body_path: "${{github.workspace}}\\RELEASE_NOTES.md"
+                files: |
+                    packaged/latest.yml
+                    packaged/workflow-x64-${{env.app_version}}.exe

@@ -59,7 +59,7 @@ jobs:
               run: npm install
             
             - name: Build project.
-              run: npm run build
+              run: npm run package
 
             - name: Generate changelog.
               run: |
@@ -85,5 +85,5 @@ jobs:
                   body_path: "${{github.workspace}}\\CHANGELOG.md"
                   token: ${{github.token}}
                   files: |
-                      dist
-                      index.html
+                    `packaged/latest.yml
+                      packaged/workflow-x64-${{env.app_version}}.exe
