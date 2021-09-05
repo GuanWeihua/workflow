@@ -24,9 +24,6 @@ jobs:
                     path: "package.json"
                     prop_path: "appName"
 
-            # - name: Install dependencies.
-            #   run: npm install
-
             - name: Set environment variables.
               run: |
                   ref="${{github.ref}}"
@@ -37,36 +34,40 @@ jobs:
                   echo "tag_name=v$app_version" >> $GITHUB_ENV
               shell: bash
 
-            - name: EchoEnvironmentVariables.
-              run: |
-                  echo "app_name: ${{env.app_name}}"
-                  echo "app_version: ${{env.app_version}}"
-                  echo "tag_name: ${{env.tag_name}}"
-            # - name: Build project.
-            #   run: npm run package
-
-            # - name: Generate release notes.
+            # - name: EchoEnvironmentVariables.
             #   run: |
-            #       npm run generate-release-notes
-            #       sed -i "1d" RELEASE_NOTES.md
-            #   shell: bash
+            #       echo "app_name: ${{env.app_name}}"
+            #       echo "app_version: ${{env.app_version}}"
+            #       echo "tag_name: ${{env.tag_name}}"
 
-            # - name: Remove release
-            #   uses: dev-drprasad/delete-tag-and-release@v0.2.0
-            #   with:
-            #       tag_name: "${{env.tag_name}}-Preview"
-            #       delete_release: true
-            #   env:
-            #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            - name: Install dependencies.
+              run: npm install
 
-            # - name: Publish release.
-            #   uses: softprops/action-gh-release@v1
-            #   with:
-            #     name: "${{env.app_name}} ${{env.tag_name}} Preview"
-            #     token: ${{github.token}}
-            #     tag_name: "${{env.tag_name}}"
-            #     target_commitish: ${{github.sha}}
-            #     body_path: "${{github.workspace}}\\RELEASE_NOTES.md"
-            #     files: |
-            #         packaged/latest.yml
-            #         packaged/workflow-x64-${{env.app_version}}.exe
+            - name: Build project.
+              run: npm run package
+
+            - name: Generate release notes.
+              run: |
+                  npm run generate-release-notes
+                  sed -i "1d" RELEASE_NOTES.md
+              shell: bash
+
+            - name: Remove release
+              uses: dev-drprasad/delete-tag-and-release@v0.2.0
+              with:
+                  tag_name: "${{env.tag_name}}-Preview"
+                  delete_release: true
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Publish release.
+              uses: softprops/action-gh-release@v1
+              with:
+                name: "${{env.app_name}} ${{env.tag_name}} Preview"
+                token: ${{github.token}}
+                tag_name: "${{env.tag_name}}"
+                target_commitish: ${{github.sha}}
+                body_path: "RELEASE_NOTES.md"
+                files: |
+                    packaged/latest.yml
+                    packaged/workflow-x64-${{env.app_version}}.exe
