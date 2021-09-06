@@ -2,8 +2,8 @@ name: release
 
 on:
     push:
-        tags:
-            - main
+        branches:
+            - release/**
 
 jobs:
     PublishRelease:
@@ -17,35 +17,62 @@ jobs:
             - name: Checkout.
               uses: actions/checkout@v2
 
-            - name: Install dependencies.
-              run: npm install
+            - name: Read version. 
+              id: version
+              uses: notiz-dev/github-action-json-property@release
+              with: 
+                    path: "package.json"
+                    prop_path: "version"
 
-            - name: GetPackageInfo.
-              uses: codex-team/action-nodejs-package-info@v1 
-
-            - name: SetEnvironmentVariables.
+            - name: Read app name. 
+              id: app_name
+              uses: notiz-dev/github-action-json-property@release
+              with: 
+                    path: "package.json"
+                    prop_path: "appName"
+              
+            - name: Set environment variables.
               run: |
-                echo "app_name=${{steps.GetPackageInfo.outputs.name}} >> $GITHUB_ENV"
-                echo "app_version=${{steps.GetPackageInfo.outputs.version}} >> $GITHUB_ENV"
+                  echo "app_name=${{steps.app_name.outputs.prop}}" >> $GITHUB_ENV
+                  echo "app_version=${{steps.version.outputs.prop}}" >> $GITHUB_ENV
+                  echo "tag_name=v${{steps.version.outputs.prop}}" >> $GITHUB_ENV
               shell: bash
 
-            - name: Generate release notes.
+            - name: EchoEnvironmentVariables.
               run: |
-                  npm run generate-release-notes
-                  sed -i "1d" RELEASE_NOTES.md
-              shell: bash
+                  echo "app_name: ${{env.app_name}}"
+                  echo "app_version: ${{env.app_version}}"
+                  echo "tag_name: ${{env.tag_name}}"
 
-            - name: Build project.
-              run: npm run package
+            # - name: Install dependencies.
+            #   run: npm install
 
-            - name: Publish release.
-              uses: softprops/action-gh-release@v1
-              with:
-                name: "${{env.app_name}} v${{env.app_version}}"
-                token: ${{github.token}}
-                tag_name: "v${{env.app_version}}"
-                target_commitish: ${{github.sha}}
-                body_path: "${{github.workspace}}\\RELEASE_NOTES.md"
-                files: |
-                    packaged/latest.yml
-                    packaged/workflow-x64-${{env.app_version}}.exe
+            # - name: GetPackageInfo.
+            #   uses: codex-team/action-nodejs-package-info@v1 
+
+            # - name: SetEnvironmentVariables.
+            #   run: |
+            #     echo "app_name=${{steps.GetPackageInfo.outputs.name}} >> $GITHUB_ENV"
+            #     echo "app_version=${{steps.GetPackageInfo.outputs.version}} >> $GITHUB_ENV"
+            #   shell: bash
+
+            # - name: Generate release notes.
+            #   run: |
+            #       npm run generate-release-notes
+            #       sed -i "1d" RELEASE_NOTES.md
+            #   shell: bash
+
+            # - name: Build project.
+            #   run: npm run package
+
+            # - name: Publish release.
+            #   uses: softprops/action-gh-release@v1
+            #   with:
+            #     name: "${{env.app_name}} v${{env.app_version}}"
+            #     token: ${{github.token}}
+            #     tag_name: "v${{env.app_version}}"
+            #     target_commitish: ${{github.sha}}
+            #     body_path: "${{github.workspace}}\\RELEASE_NOTES.md"
+            #     files: |
+            #         packaged/latest.yml
+            #         packaged/workflow-x64-${{env.app_version}}.exe

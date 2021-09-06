@@ -3,7 +3,8 @@ name: prerelease
 on:
     push:
         branches: 
-            - release/**
+            # - release/**
+            - main
 
 jobs:
     PublishPrerelease:
@@ -33,12 +34,6 @@ jobs:
                   echo "app_version=$app_version" >> $GITHUB_ENV
                   echo "tag_name=v$app_version" >> $GITHUB_ENV
               shell: bash
-
-            # - name: EchoEnvironmentVariables.
-            #   run: |
-            #       echo "app_name: ${{env.app_name}}"
-            #       echo "app_version: ${{env.app_version}}"
-            #       echo "tag_name: ${{env.tag_name}}"
 
             - name: Install dependencies.
               run: npm install
