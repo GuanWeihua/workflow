@@ -1,9 +1,9 @@
 name: release
 
-on:
-    push:
-        branches:
-            - release/**
+on: workflow_dispatch
+    # push:
+    #     branches:
+    #         - main
 
 jobs:
     PublishRelease:
